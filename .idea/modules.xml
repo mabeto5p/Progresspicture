@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Progresspicture.iml" filepath="$PROJECT_DIR$/Progresspicture.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/cameraAPI-camera2-raw-capture.iml" filepath="$PROJECT_DIR$/cameraAPI-camera2-raw-capture.iml" />
     </modules>
   </component>
 </project>

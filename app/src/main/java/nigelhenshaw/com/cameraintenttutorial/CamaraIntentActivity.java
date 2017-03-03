@@ -444,7 +444,7 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
 
     File createRawImageFile() throws IOException {
 
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
         String imageFileName = "RAW_" + timeStamp + "_";
 
         File image = File.createTempFile(imageFileName, ".dng", mRawGalleryFolder);
