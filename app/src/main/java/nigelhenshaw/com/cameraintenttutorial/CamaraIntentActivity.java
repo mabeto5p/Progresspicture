@@ -1,15 +1,19 @@
 package nigelhenshaw.com.cameraintenttutorial;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
 import android.graphics.ImageFormat;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -97,7 +101,7 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
     private TextureView.SurfaceTextureListener mSurfaceTextureListener =
             new TextureView.SurfaceTextureListener() {
                 @Override
-                public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+                  public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
                     setupCamera(width, height);
                     transformImage(width, height);
                     openCamera();
@@ -280,11 +284,11 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
                         message.sendToTarget();
                     }
                     break;
-                case ImageFormat.RAW_SENSOR:
+                /*case ImageFormat.RAW_SENSOR:
                     DngCreator dngCreator = new DngCreator(mCameraCharacteristics, mCaptureResult);
                     FileOutputStream rawFileOutputStream = null;
                     try {
-                        rawFileOutputStream = new FileOutputStream(mRawImageFile);
+                        //rawFileOutputStream = new FileOutputStream(mRawImageFile);
                         dngCreator.writeImage(rawFileOutputStream, mImage);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -299,7 +303,7 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
                         }
                     }
 
-                    break;
+                    break;*/
             }
 
         }
@@ -337,6 +341,7 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
                 return value.getByteCount() / 1024;
             }
         };
+
 
         mTextureView = (TextureView) findViewById(R.id.textureView);
     }
@@ -401,6 +406,8 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
         startActivityForResult(callCameraApplicationIntent, ACTIVITY_START_CAMERA_APP);
         */
         lockFocus();
+        getWeight();
+
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
@@ -433,7 +440,7 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
     File createImageFile() throws IOException {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName =  timeStamp + "_";
 
         File image = File.createTempFile(imageFileName, ".jpg", mGalleryFolder);
         mImageFileLocation = image.getAbsolutePath();
@@ -442,7 +449,7 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
 
     }
 
-    File createRawImageFile() throws IOException {
+    /*File createRawImageFile() throws IOException {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd").format(new Date());
         String imageFileName = "RAW_" + timeStamp + "_";
@@ -452,7 +459,7 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
 
         return image;
 
-    }
+    }*/
 
     void setReducedImageSize() {
         int targetImageViewWidth = mPhotoCapturedImageView.getWidth();
@@ -698,7 +705,7 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
                                     mImageFile = new File(mRequestingAppUri.getPath());
                                 } else {
                                     mImageFile = createImageFile();
-                                    mRawImageFile = createRawImageFile();
+                                    //mRawImageFile = createRawImageFile();
                                 }
 
 
@@ -775,14 +782,37 @@ public class CamaraIntentActivity extends Activity implements RecyclerViewClickP
         }
         return false;
     }
-    /*
-    public void popUpCall(){
-        setContentView(R.layout.activity_camara_intent);
+    private String numbers;
+    private String getWeight(){
+        final EditText edittext = new EditText(this);
+        edittext.setInputType(InputType.TYPE_CLASS_PHONE);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("How much do you weigh?");
+        builder1.setView(edittext);
+        builder1.setCancelable(true);
 
-        RelativeLayout parentView = (RelativeLayout) findViewById(R.id.popupParent);
-        LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        ViewGroup container = (ViewGroup) layoutInflater.inflate(R.layout.popup,null);
-        PopupWindow popupWindow = new PopupWindow(container, 400,400,true);
-        popupWindow.showAtLocation(parentView, Gravity.BOTTOM,  100,100);
-    }*/
+        builder1.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                    numbers = edittext.getText().toString();
+                dialog.cancel();
+
+            }
+        });
+
+        builder1.setNeutralButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        numbers = edittext.getText().toString();
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+
+        return numbers;
+    }
+
 }
